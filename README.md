@@ -30,10 +30,10 @@ The first thing you need to do to start using thes tools is to configure your ho
 
 ## Usage
 
-`ssh-copy-id`
-`ansible-playbook playbooks/storage/eda_setup.yml`
-`ansible-playbook playbooks/servers/spec_role_setup.yml`
-`ansible-playbook playbooks/servers/run_auto_test.yml`
+1. `ssh-copy-id`
+2. `ansible-playbook playbooks/storage/eda_setup.yml`
+3. `ansible-playbook playbooks/servers/spec_role_setup.yml`
+4. `ansible-playbook playbooks/servers/run_auto_test.yml`
 
 ## Authors
 
