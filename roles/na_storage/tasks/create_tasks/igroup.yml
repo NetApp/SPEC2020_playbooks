@@ -1,0 +1,15 @@
+---
+- name: Create igroup
+  netapp.ontap.na_ontap_igroup:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    initiator_group_type: "{{ item.igroup_type }}"
+    ostype: "{{ item.ostype }}"
+    initiators: "{{ item.initiators }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

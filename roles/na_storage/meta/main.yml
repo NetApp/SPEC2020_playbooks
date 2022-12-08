@@ -1,0 +1,9 @@
+galaxy_info:
+  author: Chris Schmitt
+  description: A general role to set up ONTAP storage
+  company: NetApp
+  license: GPL-2.0-or-later
+  galaxy_tags: [netapp, ontap]
+collections:
+  - netapp.ontap
+dependencies: []

@@ -1,0 +1,17 @@
+export_policies:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.export_policy is defined %}
+        {% for project_export_policy in project_vserver.export_policy %}
+- name: {{ project_export_policy.name }}_vserver_{{ vserver_num }}_export_policy
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_export_policy.state }}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

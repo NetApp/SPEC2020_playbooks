@@ -1,0 +1,20 @@
+---
+- name: Create Export Policy Rule
+  netapp.ontap.na_ontap_export_policy_rule:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    rule_index: "{{ item.rule_index }}"
+    vserver: "{{ item.vserver }}"
+    client_match: "{{ item.client_match }}"
+    rw_rule: "{{ item.rw_rule }}"
+    ro_rule: "{{ item.ro_rule }}"
+    protocol: "{{ item.protocol }}"
+    super_user_security: "{{ item.super_user_security }}"
+    anonymous_user_id: "{{ item.anonymous_user_id }}"
+    #allow_suid: "{{ item.allow_suid }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

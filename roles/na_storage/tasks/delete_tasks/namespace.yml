@@ -1,0 +1,12 @@
+---
+- name: Delete namespace
+  netapp.ontap.na_ontap_nvme_namespace:
+    state: "{{ item.state }}"
+    path: "{{ item.path }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

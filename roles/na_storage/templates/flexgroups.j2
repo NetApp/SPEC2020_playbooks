@@ -1,0 +1,34 @@
+flexgroups:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.flexgroups is defined %}
+        {% for project_flexgroup in project_vserver.flexgroups %}
+          {% for flexgroup_num in range(1, project_flexgroup.count + 1) %}
+- name: {{ project_flexgroup.name }}_vserver_{{ vserver_num }}_FlexGroup_{{ flexgroup_num }}
+  size: {{ project_flexgroup.size }}
+  size_unit: "{{ project_flexgroup.size_unit }}"
+  {% if project_flexgroup.aggr_list is defined %}
+  aggr_list: {{ project_flexgroup.aggregate_list }}
+  {% else %}
+  aggr_list: {{ aggregate_list }}
+  {% endif %}
+  aggr_list_multiplier: {{ project_flexgroup.multiplier }}
+  junction_path: "{{ project_flexgroup.junction_path }}_{{ flexgroup_num }}"
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  percent_snapshot_space: '{{ project_flexgroup.percent_snapshot_space }}'
+  export_policy: {{ project_flexgroup.export_policy }}
+  snapshot_policy: {{ project_flexgroup.snapshot_policy }}
+  unix_permissions: {{ project_flexgroup.unix_permissions }}
+  space_guarantee: {{ project_flexgroup.space_guarantee }}
+  qos_policy_group: {{ project_flexgroup.qos_policy_group }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_flexgroup.state }}
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

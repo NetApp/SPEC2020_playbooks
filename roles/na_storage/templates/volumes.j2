@@ -1,0 +1,36 @@
+volumes:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.volumes is defined %}
+        {% for project_volume in project_vserver.volumes %}
+          {% for volume_num in range(1, project_volume.count + 1) %}
+            {% set current_cycle = loop.cycle('aggr0','aggr1') %}
+{# Loops over the vservers #}
+  {# Loops to create a set number of volumes per vserver #}
+- name: {{ project_volume.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}
+  size: {{ project_volume.size }}
+  size_unit: "{{ project_volume.size_unit }}"
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+    {# Decides what aggregate should be used for the volume #}
+          {% if project_volume.aggregate is defined %}
+  aggr_name: {{ project_volume.aggregate }}
+          {% elif current_cycle == 'aggr0' %}
+  aggr_name: {{ aggregate_list[0] }}
+          {% else %}
+  aggr_name: {{ aggregate_list[1] }}
+          {% endif %}
+  percent_snapshot_space: '{{ project_volume.percent_snapshot_space }}'
+  policy: {{ project_volume.policy }}
+  snapshot_policy: {{ project_volume.snapshot_policy }}
+  space_guarantee: {{ project_volume.space_guarantee }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_volume.state }}
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

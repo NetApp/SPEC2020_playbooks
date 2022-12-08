@@ -1,0 +1,14 @@
+---
+- name: attach share
+  hosts: clients
+  gather_facts: no
+  vars:
+    mount_nfs_share_src: nfs_mount_ip:/nfs_mount_name
+    mount_nfs_share_path: /nfs_mount_name
+  tasks:
+    - name: Mount nfs share
+      mount:
+        path: "{{ mount_nfs_share_path }}"
+        src: "{{ mount_nfs_share_src }}"
+        state: mounted
+        fstype: nfs

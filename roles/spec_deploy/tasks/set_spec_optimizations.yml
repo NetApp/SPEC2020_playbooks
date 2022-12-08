@@ -1,0 +1,5 @@
+---
+- name: Set max tcp slot table entries
+  copy:
+    dest: /etc/sysctl.conf
+    content: 'sunrpc.tpc_max_slot_table_entries=128'

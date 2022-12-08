@@ -1,0 +1,15 @@
+---
+- name: Create subsystem
+  netapp.ontap.na_ontap_nvme_subsystem:
+    state: "{{ item.state }}"
+    subsystem: "{{ item.name }}"
+    vserver: "{{ item.vserver }}"
+    ostype: "{{ item.ostype }}"
+    hosts: "{{ host_nqns }}"
+    paths: "{{ item.namespace_paths }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

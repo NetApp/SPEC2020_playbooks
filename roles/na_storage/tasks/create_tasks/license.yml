@@ -1,0 +1,10 @@
+---
+- name: Add licenses
+  netapp.ontap.na_ontap_license:
+    state: present
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ ntap_username }}"
+    password: "{{ ntap_password }}"
+    license_codes: "{{ licenses }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"

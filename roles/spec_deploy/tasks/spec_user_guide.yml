@@ -1,0 +1,11 @@
+---
+- name: Add performance settings to sysctl.conf
+  blockinfile:
+    dest: /etc/sysctl.conf
+    block: "{{ lookup('ansible.builtin.file', 'sysctl.conf') }}"
+- name: Add performance settings to limits.conf
+  blockinfile:
+    dest: /etc/security/limits.conf
+    block: |
+      spec - nofile 10000
+      spec - nproc 10000

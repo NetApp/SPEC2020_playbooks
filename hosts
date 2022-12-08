@@ -1,0 +1,29 @@
+[storage:children]
+main_storage
+
+[storage:vars]
+ntap_username=__username__
+ntap_password=__password__
+https=true
+certs=false
+ansible_connection=local
+
+[main_storage]
+10.0.0.1 name=storage1 storage_num=1
+
+[clients:children]
+prime_client
+client_servers
+
+[prime_client]
+10.0.0.2
+
+[client_servers]
+10.0.0.2 lif_ip=10.0.0.99 fg_mount=/mnt/tank/Perf/NFS_dataset
+10.0.0.3 lif_ip=10.0.0.99 fg_mount=/mnt/tank/Perf/NFS_dataset
+
+[control]
+localhost ansible_connection=local
+
+[all:vars]
+ansible_user=root

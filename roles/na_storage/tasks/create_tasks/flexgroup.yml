@@ -1,0 +1,23 @@
+---
+- name: Create FlexGroup
+  netapp.ontap.na_ontap_volume:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    aggr_list: "{{ item.aggr_list }}"
+    aggr_list_multiplier: "{{ item.aggr_list_multiplier }}"
+    size: "{{ item.size }}"
+    size_unit: "{{ item.size_unit }}"
+    junction_path: "{{ item.junction_path }}"
+    vserver: "{{ item.vserver }}"
+    snapshot_policy: "{{ item.snapshot_policy }}"
+    qos_policy_group: "{{ item.qos_policy_group }}"
+    space_guarantee: "{{ item.space_guarantee }}"
+    policy: "{{ item.export_policy }}"
+    unix_permissions: "{{ item.unix_permissions }}"
+    wait_for_completion: True
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

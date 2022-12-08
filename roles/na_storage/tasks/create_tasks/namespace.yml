@@ -1,0 +1,15 @@
+---
+- name: Create namespace
+  netapp.ontap.na_ontap_nvme_namespace:
+    state: "{{ item.state }}"
+    block_size: "{{ item.block_size }}"
+    path: "{{ item.path }}"
+    vserver: "{{ item.vserver }}"
+    size: "{{ item.size }}"
+    ostype: "{{ item.ostype }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

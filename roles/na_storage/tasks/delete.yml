@@ -1,0 +1,37 @@
+---
+- name: Delete subsystems
+  include_tasks: delete_tasks/subsystem.yml
+  loop: "{{ subsystems if subsystems is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete namespaces
+  include_tasks: delete_tasks/namespace.yml
+  loop: "{{ namespaces if namespaces is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete LUNs
+  include_tasks: delete_tasks/lun.yml
+  loop: "{{ luns if luns is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete igroups
+  include_tasks: delete_tasks/igroup.yml
+  loop: "{{ igroups if igroups is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete lifs
+  include_tasks: delete_tasks/ethernet_lif.yml
+  loop: "{{ ethernet_lifs if ethernet_lifs is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete lifs
+  include_tasks: delete_tasks/fc_lif.yml
+  loop: "{{ fc_lifs if fc_lifs is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete volumes
+  include_tasks: delete_tasks/volume.yml
+  loop: "{{ volumes if volumes is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete flexgroups
+  include_tasks: delete_tasks/volume.yml
+  loop: "{{ flexgroups if flexgroups is iterable else [] }}"
+  when: item.state == "absent"
+- name: Delete vservers
+  include_tasks: delete_tasks/vserver.yml
+  loop: "{{ vservers if vservers is iterable else [] }}"
+  when: item.state == "absent"

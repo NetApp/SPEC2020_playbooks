@@ -1,0 +1,39 @@
+fc_lifs:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% set current_namespace = namespace(count=1,port_letters=port_letters) %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.lifs is defined %}
+        {% for project_lif in project_vserver.lifs %}
+{# This sets alternate active LIFs between vServers 
+   to get around the limit on # of NVMe LIFs per vserver
+   while still using all available LIFs #}
+          {% if "fc" in project_lif.protocol %}
+            {% set current_namespace.count = 1 %}
+            {% for lif_loop in range((project_lif.count/(port_letters|length))|int) %}
+              {% for lif_letter in current_namespace.port_letters %}
+                {% set node_num = (current_namespace.count/project_lif.count)|round|int %}
+- name: {{ project_lif.name }}_vserver_{{ vserver_num }}_lif_{{ current_namespace.count }}_port_{{ port_num }}{{ lif_letter }}
+  home_node: {{ node_list[node_num] }}
+  home_port: {{ port_num }}{{ lif_letter }}
+  protocols: {{ project_lif.protocol }}
+  role: data
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_lif.state }}
+                {% set current_namespace.count = current_namespace.count + 1 %}
+              {% endfor %}
+            {% endfor %}
+            {% if current_namespace.port_letters == port_letters %}
+              {% set current_namespace.port_letters = current_namespace.port_letters | reverse %}
+            {% else %}
+              {% set current_namespace.port_letters = port_letters %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

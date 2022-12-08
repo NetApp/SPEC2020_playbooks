@@ -1,0 +1,43 @@
+CLIENT_MOUNTPOINTS={{ client_mountpoints }}
+USER={{ username }}
+PASSWORD={{ password }}
+EXEC_PATH=/home/{{ username }}/{{ folder_name }}/SPECstorage2020/binaries/linux/x86_64/netmist
+BENCHMARK={{ benchmark }}
+LOAD={{ load }}
+INCR_LOAD={{ incr_load }}
+NUM_RUNS={{ num_runs }}
+IPV6_ENABLE=0
+PRIME_MON_SCRIPT=
+PRIME_MON_ARGS=
+NETMIST_LOGS=
+NETMIST_WINDOWS_LOGS=
+NETMIST_LICENSE_KEY=3
+NETMIST_LICENSE_KEY_PATH=/tmp/netmist_license_key
+
+##############################################################################
+#
+# DO NOT EDIT BELOW THIS LINE FOR AN OFFICIAL BENCHMARK SUBMISSION
+#
+# Constraints and overrides on the values below this line can be found in the
+# benchmark XML file (default is benchmarks.xml). To bypass all overrides
+# use the --ignore-overrides flag in SfsManager. Using the flag will make
+# the results invalid for formal submission.
+#
+##############################################################################
+MAX_FD=
+LOCAL_ONLY=0
+FILE_ACCESS_LIST=0
+
+# PDSM_MODE of 0 create shared PDSM log file with overwrites.
+# PDSM_MODE of 1 create shared PDSM log file with open append.
+PDSM_MODE=
+# PDSM_INTERVAL # Interval in seconds
+PDSM_INTERVAL=
+# <PLATFORM>_PDSM_LOG filename Full pathname to the PDSM log file. Used to
+    # log the details of every proc's activities.
+    UNIX_PDSM_LOG=
+    WINDOWS_PDSM_LOG=
+    # <PLATFORM>_PDSM_CONTROL filename Full pathname to the PDSM control file. Used
+        # for dynamically changing workloads.
+        UNIX_PDSM_CONTROL=
+        WINDOWS_PDSM_CONTROL=

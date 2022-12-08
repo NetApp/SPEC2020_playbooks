@@ -1,0 +1,13 @@
+broadcast_domains:
+{% if broadcast_domains is defined %}
+  {% for project_broadcast_domain in broadcast_domains %}
+- name: {{ project_broadcast_domain.name }}
+  ipspace: {{ project_broadcast_domain.ipspace }}
+  mtu: {{ project_broadcast_domain.mtu }}
+  ports: {{ project_broadcast_domain.ports }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_broadcast_domain.state }}
+  {% endfor %}
+{% endif %}

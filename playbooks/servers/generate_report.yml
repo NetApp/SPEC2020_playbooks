@@ -1,0 +1,13 @@
+---
+- name: Generate report
+  hosts: new_prime_client
+  gather_facts: no
+  vars:
+    suffix: eda-flexg-run-1
+    report_xml: test_submission.xml
+    folder_name: Spec2020
+    username: spec
+  tasks:
+    - name: generate report
+      import_tasks: tasks/report.yml
+      when: report_xml|length > 0

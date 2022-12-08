@@ -1,0 +1,112 @@
+---
+- hosts: storage
+  vars:
+    ansible_python_interpreter: /root/anaconda3/bin/python3
+    ipspaces:
+      - name: data
+        state: present
+    broadcast_domains:
+      - name: data
+        state: present
+        ipspace: data
+        mtu: 9000
+        ports: 
+          - example_node1:e0b
+          - example_node1:e1b
+          - example_node1:e3a
+          - example_node1:e3b
+          - example_node1:e4a
+          - example_node1:e4b
+          - example_node2:e0b
+          - example_node2:e1b
+          - example_node2:e3a
+          - example_node2:e3b
+          - example_node2:e4a
+          - example_node2:e4b
+    licenses: [example-license-here]
+    vservers:
+      - name: example_eda
+        state: present
+        count: 1
+        ipspace: Default
+        security_style: unix
+        snap_policy: none
+        allowed_protocols: nfs
+        export_policy:
+          - name: example_eda
+            state: present
+            rule:
+              - name: example_eda
+                state: present
+                rule_index: 100
+                client_match: 0.0.0.0/0
+                rw_rule: any
+                ro_rule: any
+                protocol: nfs,nfs3
+                super_user_security: any
+                anonymous_user_id: 65534
+                ntfs_unix_security: ignore
+        lifs:
+          - name: example_eda
+            state: present
+            protocol: nfs
+            netmask: '255.255.255.0'
+            ips: 
+              - node_name: example_node1
+                ports:
+                - port: e3a
+                  ips:
+                  - '192.168.2.23'
+              - node_name: example_node1
+                ports:
+                - port: e3b
+                  ips:
+                  - '192.168.2.24'
+              - node_name: example_node1
+                ports:
+                - port: e4a
+                  ips:
+                  - '192.168.2.25'
+              - node_name: example_node1
+                ports:
+                - port: e4b
+                  ips:
+                  - '192.168.2.26'
+              - node_name: example_node2
+                ports:
+                - port: e3a
+                  ips:
+                  - '192.168.2.29'
+              - node_name: example_node2
+                ports:
+                - port: e3b
+                  ips:
+                  - '192.168.2.30'
+              - node_name: example_node2
+                ports:
+                - port: e4a
+                  ips:
+                  - '192.168.2.31'
+              - node_name: example_node2
+                ports:
+                - port: e4b
+                  ips:
+                  - '192.168.2.32'
+        nfs:
+          tcp_max_xfer_size: 262144
+        flexgroups: 
+          - name: example_eda
+            state: present
+            count: 4
+            multiplier: 8
+            size: 2
+            size_unit: "tb"
+            junction_path: "/example_eda_fg"
+            export_policy: example_eda_vserver_1_export_policy
+            policy: default
+            snapshot_policy: none
+            space_guarantee: none
+            qos_policy_group: none
+            percent_snapshot_space: '0'
+  roles:
+    - na_storage

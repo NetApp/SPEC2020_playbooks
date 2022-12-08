@@ -1,0 +1,80 @@
+---
+- name: Create aggregates
+  include_tasks: create_tasks/aggregate.yml
+  loop: "{{ aggregates if aggregates is iterable else [] }}"
+  when: item.state == "present"
+- name: Create ipspaces
+  include_tasks: create_tasks/ipspace.yml
+  loop: "{{ ipspaces if ipspaces is iterable else [] }}"
+  when: item.state == "present"
+- name: Create broadcast_domains
+  include_tasks: create_tasks/broadcast_domain.yml
+  loop: "{{ broadcast_domains if broadcast_domains is iterable else [] }}"
+  when: item.state == "present"
+- name: Create vservers
+  include_tasks: create_tasks/vserver.yml
+  loop: "{{ vservers if vservers is iterable else [] }}"
+  when: item.state == "present"
+- name: Create export policies
+  include_tasks: create_tasks/export_policy.yml
+  loop: "{{ export_policies if export_policies is iterable else [] }}"
+  when: item.state == "present"
+- name: Create export policy rules
+  include_tasks: create_tasks/export_policy_rule.yml
+  loop: "{{ export_policy_rules if export_policy_rules is iterable else [] }}"
+  when: item.state == "present"
+- name: Activate licenses
+  include_tasks: create_tasks/license.yml
+  when: licenses is defined
+- name: Activate nvme
+  include_tasks: create_tasks/nvme.yml
+  loop: "{{ vservers }}"
+  when: item.allowed_protocols == "nvme" and item.state == "present"
+- name: Activate nfs
+  include_tasks: create_tasks/nfs.yml
+  loop: "{{ vservers }}"
+  when: item.allowed_protocols == "nfs" and item.state == "present"
+- name: Activate fcp
+  include_tasks: create_tasks/fcp.yml
+  loop: "{{ vservers }}"
+  when: item.allowed_protocols == "fcp" and item.state == "present"
+- name: Activate iscsi
+  include_tasks: create_tasks/iscsi.yml
+  loop: "{{ vservers }}"
+  when: item.allowed_protocols == "iscsi" and item.state == "present"
+- name: Create volumes
+  include_tasks: create_tasks/volume.yml
+  loop: "{{ volumes if volumes is iterable else [] }}"
+  when: item.state == "present"
+- name: Create flexgroups
+  include_tasks: create_tasks/flexgroup.yml
+  loop: "{{ flexgroups if flexgroups is iterable else [] }}"
+  when: item.state == "present"
+- name: Create lifs
+  include_tasks: create_tasks/ethernet_lif.yml
+  loop: "{{ ethernet_lifs if ethernet_lifs is iterable else [] }}"
+  when: item.state == "present"
+- name: Create lifs
+  include_tasks: create_tasks/fc_lif.yml
+  loop: "{{ fc_lifs if fc_lifs is iterable else [] }}"
+  when: item.state == "present"
+- name: Create LUNs
+  include_tasks: create_tasks/lun.yml
+  loop: "{{ luns if luns is iterable else [] }}"
+  when: item.state == "present"
+- name: Create igroups
+  include_tasks: create_tasks/igroup.yml
+  loop: "{{ igroups if igroups is iterable else [] }}"
+  when: item.state == "present"
+- name: Map LUNs
+  include_tasks: create_tasks/lun_map.yml
+  loop: "{{ lun_maps if lun_maps is iterable else [] }}"
+  when: item.state == "present"
+- name: Create namespaces
+  include_tasks: create_tasks/namespace.yml
+  loop: "{{ namespaces if namespaces is iterable else [] }}"
+  when: item.state == "present"
+- name: Create subsystems
+  include_tasks: create_tasks/subsystem.yml
+  loop: "{{ subsystems if subsystems is iterable else [] }}"
+  when: item.state == "present"

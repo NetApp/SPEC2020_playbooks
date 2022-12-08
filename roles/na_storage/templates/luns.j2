@@ -1,0 +1,29 @@
+luns:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.volumes is defined %}
+        {% for project_volume in project_vserver.volumes %}
+          {% for volume_num in range(1, project_volume.count + 1) %}
+            {% if project_volume.luns is defined %}
+              {% for project_lun in project_volume.luns %}
+                {% for lun_num in range(1, project_lun.count + 1) %}
+- name: {{ project_lun.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}_lun_{{ lun_num }}
+  volume: {{ project_volume.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  size: {{ project_lun.size }}
+  size_unit: {{ project_lun.size_unit }}
+  ostype: {{ project_lun.ostype }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_lun.state }}
+                {% endfor %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

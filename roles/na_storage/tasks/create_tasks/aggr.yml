@@ -1,0 +1,13 @@
+---
+- name: run ontap storage auto provision
+  netapp.ontap.na_ontap_command:
+    command: ['storage','aggregate','auto-provision',' -skip-confirmation']
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ ntap_username }}"
+    password: "{{ ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local
+- name: Wait for aggregates to create
+  wait_for:
+    timeout: 60

@@ -1,0 +1,12 @@
+---
+- name: Delete volume
+  netapp.ontap.na_ontap_volume:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

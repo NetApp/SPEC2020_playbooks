@@ -1,0 +1,5 @@
+---
+- name: Setting up fcp nvme uuids
+  set_fact:
+    host_nqns: "{{ hostvars['localhost']['nvme_uuids'] }}"
+  when: host_nqns is undefined and "nvme" in vservers[0].allowed_protocols

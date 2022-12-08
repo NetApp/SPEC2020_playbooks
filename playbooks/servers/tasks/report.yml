@@ -1,0 +1,7 @@
+---
+- name: Generate Spec report
+  ansible.builtin.shell: "python3 SpecReport -i {{ report_xml }} -r sfs_rc -s {{ suffix }}"
+  args:
+    chdir: "/home/{{ username }}/{{ folder_name }}/SPECstorage2020/"
+  become_user: spec
+  become: yes

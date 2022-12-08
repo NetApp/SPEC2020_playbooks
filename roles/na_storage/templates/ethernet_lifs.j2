@@ -1,0 +1,34 @@
+ethernet_lifs:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.lifs is defined %}
+        {% for project_lif in project_vserver.lifs %}
+{# This sets alternate active LIFs between vServers 
+   to get around the limit on # of NVMe LIFs per vserver
+   while still using all available LIFs #}
+          {% if "iscsi" in project_lif.protocol or "nfs" in project_lif.protocol %}
+            {% for node in project_lif.ips %}
+              {% for port in node.ports %}
+                {% for ip in port.ips %}
+- name: {{ project_lif.name }}_vserver_{{ vserver_num }}_lif_{{ node.node_name }}_{{ port.port }}
+  home_node: {{ node.node_name }}
+  home_port: {{ port.port }}
+  address: {{ ip }}
+  netmask: {{ project_lif.netmask }}
+  role: data
+  protocols: {{ project_lif.protocol }}
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_lif.state }}
+                {% endfor %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

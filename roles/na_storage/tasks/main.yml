@@ -1,0 +1,32 @@
+---
+# Collecting storage information
+- name: Get the node info from the storage
+  import_tasks: get_tasks/get_node_info.yml
+- name: Get the aggregate info from the storage
+  import_tasks: get_tasks/get_aggr_info.yml
+- name: Create aggregates if they dont exist
+  import_tasks: create_tasks/aggr.yml
+  when: (node_list | length) != (aggregate_list | length )
+- name: Get the aggregate info from the storage
+  import_tasks: get_tasks/get_aggr_info.yml
+- name: Get the FCP port info from the storage
+  import_tasks: get_tasks/get_fcp_port.yml
+- name: Set the NQN IDs for the storage host
+  import_tasks: get_tasks/get_nqn_ids.yml
+- name: Set the FCP IDs for the storage host
+  import_tasks: get_tasks/get_fcp_ids.yml
+# Creating and loading variables
+- name: Create a variable file based on options passed in
+  template:
+    src: ./variables.j2
+    dest: "./vars/{{ inventory_hostname }}.yml"
+    lstrip_blocks: yes
+- name: Load variables from the new vars file
+  include_vars:
+    file: "./vars/{{ inventory_hostname }}.yml"
+
+- name: Run delete where necessary
+  include_tasks: delete.yml
+
+- name: Run create where necessary
+  include_tasks: create.yml

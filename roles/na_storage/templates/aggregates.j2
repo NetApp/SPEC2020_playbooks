@@ -1,0 +1,14 @@
+aggregates:
+{% if aggregates is defined %}
+  {% for project_aggregate in aggregates %}
+{# Loops to create the vserver variables #}
+- name: {{ project_aggregate.name }}_aggregate
+  service_state: {{ project_aggregate.service_state }}
+  disk_count: {{ project_aggregate.disk_count }}
+  snaplock_type: {{ project_aggregate.snaplock_type }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_aggregate.state }}
+  {% endfor %}
+{% endif %}

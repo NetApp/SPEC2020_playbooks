@@ -1,0 +1,11 @@
+---
+# the length of this array should be a multiple of 4
+# or it could break some logic
+port_letters: ["a", "b", "c", "d"]
+
+https: false
+certs: true
+lun_count_per_volume: 1
+namespace_block_size: 4096
+
+tcp_max_xfer_size: 65536

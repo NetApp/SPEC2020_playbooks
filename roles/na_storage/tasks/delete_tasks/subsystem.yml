@@ -1,0 +1,14 @@
+---
+- name: Delete subsystem
+  netapp.ontap.na_ontap_nvme_subsystem:
+    state: "{{ item.state }}"
+    subsystem: "{{ item.name }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+    skip_host_check: yes
+    skip_mapped_check: yes
+  connection: local

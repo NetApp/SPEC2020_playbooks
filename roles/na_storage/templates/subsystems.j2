@@ -1,0 +1,38 @@
+subsystems:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.subsystems is defined %}
+        {% for project_subsystem in project_vserver.subsystems %}
+  {# Loops to create a set number of volumes per vserver #}
+- name: {{ project_subsystem.name }}_vserver_{{ vserver_num }}_subsystem
+  {# Need to add a way to get host NQNs #}
+  namespace_paths:
+          {% for project_volume in project_vserver.volumes %}
+            {% for volume_num in range(1,project_volume.count + 1) %}
+              {% if project_volume.namespaces is defined %}
+                {% for project_namespace in project_volume.namespaces %}
+                  {% if project_namespace.subsystem is undefined %}
+                    {% for namespace_num in range(1,project_namespace.count + 1) %}
+  - /vol/{{ project_volume.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}/{{ project_namespace.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}_namespace_{{ namespace_num }}
+                    {% endfor %}
+                  {% elif project_namespace.subsystem == project_subsystem.name %}
+                    {% for namespace_num in range(1,project_namespace.count + 1) %}
+  - /vol/{{ project_volume.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}/{{ project_namespace.name }}_vserver_{{ vserver_num }}_volume_{{ volume_num }}_namespace_{{ namespace_num }}
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+  ostype: {{ project_subsystem.ostype }}
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_subsystem.state }}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

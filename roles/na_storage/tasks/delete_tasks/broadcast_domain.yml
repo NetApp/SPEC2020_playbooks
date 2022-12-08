@@ -1,0 +1,14 @@
+---
+- name: Delete broadcast domain
+  netapp.ontap.na_ontap_broadcast_domain:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    mtu: "{{ item.mtu }}"
+    ipspace: "{{ item.ipspace }}"
+    ports: "{{ item.ports }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

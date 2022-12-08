@@ -1,0 +1,26 @@
+---
+- name: copy private key to .ssh
+  copy:
+    src: "{{ key_file }}"
+    dest: "/home/{{ username }}/.ssh/"
+    mode: '700'
+    owner: "{{ username }}"
+  become: yes
+  become_user: "{{ username }}"
+- name: copy public key
+  copy:
+    src: "{{ key_file }}.pub"
+    dest: "/home/{{ username }}/.ssh/"
+    mode: '700'
+    owner: "{{ username }}"
+  become: yes
+  become_user: "{{ username }}"
+- name: copy pub key to authorized_keys
+  copy:
+    src: "/home/{{ username }}/.ssh/id_rsa.pub"
+    dest: "/home/{{ username }}/.ssh/authorized_keys"
+    group: "{{ username }}"
+    mode: "0644"
+    remote_src: True
+  become: yes
+  become_user: "{{ username }}"

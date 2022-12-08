@@ -1,0 +1,29 @@
+vservers:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+{# Loops to create the vserver variables #}
+- name: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  allowed_protocols: {{ project_vserver.allowed_protocols }}
+  nfs:
+    {% if project_vserver.nfs.tcp_max_xfer_size is defined %}
+    tcp_max_xfer_size: {{ project_vserver.nfs.tcp_max_xfer_size }}
+    {% else %}
+    tcp_max_xfer_size: {{ tcp_max_xfer_size }}
+    {% endif %}
+  ipspace: {{ project_vserver.ipspace }}
+  security_style: {{ project_vserver.security_style }}
+  snap_policy: {{ project_vserver.snap_policy }}
+  aggr_list: {{ aggregate_list }}
+    {% if vserver_num < ((project_vserver.count + 1)/2) %}
+  root_volume_aggr: {{ aggregate_list[0] }}
+    {% else %}
+  root_volume_aggr: {{ aggregate_list[1] }}
+    {% endif %}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_vserver.state }}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,56 @@
+---
+- name: create spec user
+  user: 
+    name: "{{ username }}"
+    home: "/home/{{ username }}"
+    groups: root
+    password: "{{ password | password_hash('sha512', 'mysecretsalt') }}"
+- name: create spec home directory
+  file: 
+    path: "/home/{{ username }}"
+    state: directory
+    owner: "{{ username }}"
+  become: yes
+  become_user: "{{ username }}"
+- name: Create the spec2020 directory
+  file:
+    path: "/home/{{ username }}/{{ folder_name }}"
+    state: directory
+    owner: "{{ username }}"
+  become: yes
+  become_user: "{{ username }}"
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ spec_location }}/{{ spec_filename }}"
+    dest: "/home/{{ username }}/{{ folder_name }}"
+    owner: "{{ username }}"
+  become: yes
+  become_user: "{{ username }}"
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: "/home/{{ username }}/{{ folder_name }}/{{ spec_filename }}"
+    dest: "/home/{{ username }}/{{ folder_name }}"
+    owner: "{{ username }}"
+    remote_src: yes
+  become: yes
+  become_user: "{{ username }}"
+- name: Create mount directories
+  file:
+    path: "/{{ fg_mount }}"
+    state: directory
+- name: Mount CV to clients
+  mount:
+    path: "{{ local_nfs_share_location }}"
+    src: "{{ lif_ip }}:{{ fg_mount }}"
+    opts: "{{ nfs_storage_mount_options }}"
+    state: mounted
+    fstype: nfs
+- name: Upgrade PyYAML
+  ansible.builtin.pip:
+    name: PyYAML
+    state: forcereinstall
+- name: Install python packages
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    state: latest
+  loop: [pip, matplotlib]

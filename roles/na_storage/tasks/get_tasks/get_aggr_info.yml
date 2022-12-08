@@ -1,0 +1,36 @@
+---
+- name: Setting up aggregate list
+  set_fact:
+    all_aggregates: []
+- name: Setting up non-root aggregate list
+  set_fact:
+    aggregate_list: []
+- name: Get aggregate info
+  netapp.ontap.na_ontap_info: 
+    state: info
+    gather_subset: "aggregate_info"
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ ntap_username }}"
+    password: "{{ ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  register: ontap_info
+  connection: local
+#- name: output more info
+#  debug:
+#    var: ontap_info.ontap_info
+- name: Get aggregates
+  set_fact:
+    all_aggregates: "{{ all_aggregates + [ item.key ] }}"
+  loop: "{{ ontap_info.ontap_info.aggregate_info | dict2items }}"
+#- name: output more info
+#  debug:
+#    var: all_aggregates
+- name: loop to find non-root aggrs
+  set_fact:
+    aggregate_list: "{{ aggregate_list + [ item ] }}"
+  loop: "{{ all_aggregates }}"
+  when: ontap_info.ontap_info.aggregate_info[ item ].aggr_raid_attributes.is_root_aggregate == "false"
+- name: output more info
+  debug:
+    var: aggregate_list

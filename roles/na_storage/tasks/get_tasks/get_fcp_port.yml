@@ -1,0 +1,21 @@
+---
+- name: Setting up fcp adapter list
+  set_fact:
+    fcp_adapters: []
+- name: Get fcp adapter info
+  netapp.ontap.na_ontap_info: 
+    state: info
+    gather_subset: "fcp_adapter_info"
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ ntap_username }}"
+    password: "{{ ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  register: ontap_info
+  connection: local
+- name: set fcp adapters
+  set_fact:
+    fcp_adapters: "{{ ontap_info.ontap_info.fcp_adapter_info.keys() | list }}"
+- name: output adapter info
+  set_fact:
+    port_num: "{{ fcp_adapters[0][0] }}"

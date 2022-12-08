@@ -1,0 +1,12 @@
+---
+- name: Delete iSCSI
+  netapp.ontap.na_ontap_iscsi:
+    state: "{{ item.state }}"
+    service_state: started
+    vserver: "{{ item.name }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

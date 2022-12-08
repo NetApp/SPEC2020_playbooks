@@ -1,0 +1,5 @@
+---
+- name: Setting up fcp uuids
+  set_fact:
+    initiators: "{{ hostvars['localhost']['fcp_uuids'] }}"
+  when: initiators is undefined and "fcp" in vservers[0].allowed_protocols

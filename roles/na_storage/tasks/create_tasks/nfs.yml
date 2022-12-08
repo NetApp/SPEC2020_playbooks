@@ -1,0 +1,14 @@
+---
+- name: Change NFS status
+  na_ontap_nfs:
+    state: "{{ item.state }}"
+    service_state: started
+    vserver: "{{ item.name }}"
+    nfsv3: enabled
+    tcp_max_xfer_size: "{{ item.nfs.tcp_max_xfer_size }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

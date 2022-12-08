@@ -1,0 +1,39 @@
+---
+- name: Run a test
+  hosts: new_prime_client
+  gather_facts: no
+  vars:
+    folder_name: Spec2020             # The name of the folder you want to contain your SPECstorage2020 packages and folders
+    fg_mount: /mnt/freenas/test1      # Where you want to mount your flexgroup
+    client_mountpoints: ""            # LEAVE THIS BLANK
+    username: spec                    
+    password: __EXAMPLE_PASSWORD__    # Change this to your desired password
+    benchmark: EDA_BLENDED            # The benchmark you would like to run
+    load: 1                           # The next three variable will not be used for an auto test
+    incr_load: 1
+    num_runs: 1
+  tasks:
+    - name: create mount_points
+      set_fact: 
+        client_mountpoints: "{{ client_mountpoints }} {{ item }}:{{ fg_mount }}"
+      loop: "{{ groups['new_client_servers'] }}"
+    - name: Create a variable file based on options passed in
+      template:
+        src: ./sfs_rc.j2
+        dest: "/home/{{ username }}/{{ folder_name }}/SPECstorage2020/sfs_rc"
+        lstrip_blocks: yes
+    - name:
+      set_fact:
+        suffix: "{{ benchmark }}-load-{{ load }}-increment-{{ incr_load }}-runs-{{ num_runs }}"
+    - name: Run SPEC
+      ansible.builtin.shell: "python3 SM2020 -r sfs_rc -s {{ suffix }} -a -A 98"
+      args:
+        chdir: "/home/{{ username }}/{{ folder_name }}/SPECstorage2020/"
+      become_user: spec
+      become: yes
+      async: 86400
+      poll: 15
+      remote_user: spec
+    - name: generate report
+      import_tasks: tasks/generate_report.yml
+      when: report_xml|length > 0

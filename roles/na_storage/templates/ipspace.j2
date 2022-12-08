@@ -1,0 +1,10 @@
+ipspaces:
+{% if ipspaces is defined %}
+  {% for project_ipspace in ipspaces %}
+- name: {{ project_ipspace.name }}
+  state: {{ project_ipspace.state }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  {% endfor %}
+{% endif %}

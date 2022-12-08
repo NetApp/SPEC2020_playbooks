@@ -1,0 +1,17 @@
+---
+- name: setup to user guide settings
+  import_tasks: spec_user_guide.yml
+  when: perf_settings
+- name: install required packages
+  import_tasks: install.yml
+- name: disable firewalls
+  import_tasks: disable_firewall.yml
+- name: edit hosts file
+  import_tasks: edit_hosts.yml
+  when: edit_hosts
+- name: set spec optimizations
+  import_tasks: set_spec_optimizations.yml
+- name: setup to run spec
+  import_tasks: spec_setup.yml
+- name: copy ssh keys to spec user
+  import_tasks: copy_ssh.yml

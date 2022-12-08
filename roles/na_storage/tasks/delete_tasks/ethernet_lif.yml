@@ -1,0 +1,19 @@
+---
+- name: Delete lifs
+  netapp.ontap.na_ontap_interface:
+    state: "{{ item.state }}"
+    interface_name: "{{ item.name }}"
+    vserver: "{{ item.vserver }}"
+    protocols: "{{ item.protocols }}"
+    home_node: "{{ item.home_node }}"
+    home_port: "{{ item.home_port }}"
+    role: "{{ item.role }}"
+    address: "{{ item.address }}"
+    netmask: "{{ item.netmask }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    admin_status: up
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

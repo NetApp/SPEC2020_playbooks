@@ -1,0 +1,29 @@
+export_policy_rules:
+{% if vservers is defined %}
+  {% for project_vserver in vservers %}
+    {% for vserver_num in range(1,project_vserver.count + 1) %}
+      {% if project_vserver.export_policy is defined %}
+        {% for project_export_policy in project_vserver.export_policy %}
+          {% if project_export_policy.rule is defined %}
+            {% for project_export_policy_rule in project_export_policy.rule %}
+- name: {{ project_export_policy_rule.name }}_vserver_{{ vserver_num }}_export_policy
+  vserver: {{ project_vserver.name }}_vserver_{{ vserver_num }}
+  rule_index: {{ project_export_policy_rule.rule_index }}
+  client_match: {{ project_export_policy_rule.client_match }}
+  rw_rule: {{ project_export_policy_rule.rw_rule }}
+  ro_rule: {{ project_export_policy_rule.ro_rule }}
+  protocol: {{ project_export_policy_rule.protocol }}
+  super_user_security: {{ project_export_policy_rule.super_user_security }}
+  anonymous_user_id: {{ project_export_policy_rule.anonymous_user_id }}
+  ntfs_unix_security: {{ project_export_policy_rule.ntfs_unix_security }}
+  ntap_hostname: {{ inventory_hostname }}
+  ntap_username: {{ ntap_username }}
+  ntap_password: {{ ntap_password }}
+  state: {{ project_export_policy_rule.state }}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

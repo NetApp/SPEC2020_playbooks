@@ -1,0 +1,12 @@
+---
+- name: Create NVME process
+  netapp.ontap.na_ontap_nvme:
+    state: "{{ item.state }}"
+    status_admin: True
+    vserver: "{{ item.name }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+  connection: local

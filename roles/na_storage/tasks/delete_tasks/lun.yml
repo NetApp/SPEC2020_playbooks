@@ -1,0 +1,14 @@
+---
+- name: Delete luns
+  netapp.ontap.na_ontap_lun:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    flexvol_name: "{{ item.volume }}"
+    vserver: "{{ item.vserver }}"
+    hostname: "{{ item.ntap_hostname }}"
+    username: "{{ item.ntap_username }}"
+    password: "{{ item.ntap_password }}"
+    https: "{{ https }}"
+    validate_certs: "{{ certs }}"
+    force_remove: yes
+  connection: local
