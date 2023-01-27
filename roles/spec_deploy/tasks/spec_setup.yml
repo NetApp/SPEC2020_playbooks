@@ -53,4 +53,4 @@
   ansible.builtin.pip:
     name: "{{ item }}"
     state: latest
-  loop: [pip, matplotlib]
+  loop: [pip3, matplotlib3]

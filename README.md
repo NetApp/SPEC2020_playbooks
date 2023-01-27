@@ -16,6 +16,9 @@ There are two main folders in this repository, playbooks and roles. As a user yo
 
 ## Requirements
 
+Install ansible
+Install the NetApp Ontap Ansible collection `ansible-galaxy collection install netapp.ontap`
+
 ## Getting Started
 
 The first thing you need to do to start using thes tools is to configure your host file. Your host file contains all of the information ansible needs to be able to configure your servers and storage. 
@@ -30,10 +33,10 @@ The first thing you need to do to start using thes tools is to configure your ho
 
 ## Usage
 
-1. `ssh-copy-id`
-2. `ansible-playbook playbooks/storage/eda_setup.yml`
-3. `ansible-playbook playbooks/servers/spec_role_setup.yml`
-4. `ansible-playbook playbooks/servers/run_auto_test.yml`
+1. The first step to set up to run ansible is to copy your SSH keys to the remote machine. This allows ansible to easily to connect and configure the remote machines. This can be done using `ssh-copy-id`. You can test this functionality using `ansible -m ping <group_name>`
+2. Once you have ansible working and the storage playbooks configured, you can run `ansible-playbook playbooks/storage/eda_setup.yml` to set up your storage.
+3. Once you have the SPEC role setup file configured, you can run `ansible-playbook playbooks/servers/spec_role_setup.yml` to configure the clients to run SPEC. This will complete a variety of steps detailed in the SPEC role documentation.
+4. Once you have all of that completed, we should be ready to run SPEC. You can do this using one of the automated test scripts or you can SSH into the prime client and run SPEC manually. To run it through automation, use `ansible-playbook playbooks/servers/run_auto_test.yml` or `ansible-playbook playbooks/servers/run_test.yml`
 
 ## Authors
 
